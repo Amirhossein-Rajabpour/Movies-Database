@@ -1,0 +1,452 @@
+openapi: 3.0.0
+info:
+  description: "IE Fall 2021 backend assignment"
+  version: "1.0.0"
+  title: "IE-Fall 2021 backend"
+  contact:
+    email: "ie.ce.aut@gmail.com"
+tags:
+- name: "admin"
+  description: "Movie CRUD only for admin"
+- name: "user"
+  description: "User restricted features"
+- name: "public"
+  description: "public movie operations"
+paths:
+  /admin/movie:
+    post:
+      tags:
+      - "admin"
+      security:
+        - BearerAuth: []
+      summary: "Insert a new movie"
+      description: "Use this endpoint to create a movie"
+      operationId: "addMovie"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - name
+                - description
+            examples:
+              Normal SMS:
+                value:
+                  name: "Hoshdar baraye Cobra 11"
+                  description: "Film action khafan"
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        204:
+          description: OK
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /admin/movie/{id}:
+    put:
+      tags:
+      - "admin"
+      security:
+        - BearerAuth: []
+      summary: "Update a movie"
+      description: "Use this endpoint to update a movie"
+      operationId: "updateMovie"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: movie id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                description:
+                  type: string
+              required:
+                - name
+                - description
+            examples:
+              Successful insert:
+                value:
+                  name: "Hoshdar baraye Cobra 11"
+                  description: "Film action khafan"
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        204:
+          description: OK
+        500:
+          description: There was an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - "admin"
+      summary: "Remove a movie"
+      description: ""
+      operationId: "deleteMovie"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: The name of the template.
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        204:
+          description: OK
+        500:
+          description: There was an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - BearerAuth: [] 
+  /admin/comment/{id}:
+    put:
+      tags:
+      - "admin"
+      security:
+        - BearerAuth: []
+      summary: "update a comment"
+      description: "Use this endpoint to update a comment(i.e. approving/disapproving a comment)."
+      operationId: "updateComment"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: comment id.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                approved:
+                  type: boolean
+              required:
+                - approved
+            examples:
+              Successful approval:
+                value:
+                  approved: true
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        204:
+          description: OK
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags:
+      - "admin"
+      summary: "remove a movie"
+      description: ""
+      operationId: "deleteComment"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: comment id to delete.
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        204:
+          description: OK
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      security:
+        - BearerAuth: [] 
+
+  /user/vote:
+    post:
+      tags:
+      - "user"
+      security:
+        - BearerAuth: []
+      summary: "vote a movie"
+      description: "Use this endpoint to submit a vote(used for both submission and editing)"
+      operationId: "submitVote"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movie_id:
+                  type: integer
+                vote:
+                  type: integer
+                  minimum: 0
+                  maximum: 10
+              required:
+                - movie_id
+                - vote
+            examples:
+              successful vote:
+                value:
+                  movie_id: 1
+                  vote: 5
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        204:
+          description: OK
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /user/comment:
+    post:
+      tags:
+      - "user"
+      security:
+        - BearerAuth: []
+      summary: "submit a comment"
+      description: "submit a comment"
+      operationId: "submitComment"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                movie_id:
+                  type: integer
+                comment_body:
+                  type: string
+              required:
+                - movie_id
+                - comment_body
+            examples:
+              Successful comment:
+                value:
+                  movie_id: 1
+                  comment_body: "Filmi besyar ziba"
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        200:
+          description: OK
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+                
+  /comments:
+    get:
+      tags:
+      - "public"
+      summary: "get movie comments"
+      description: ""
+      operationId: "getComments"
+      parameters:
+        - in: query
+          name: movie
+          schema:
+            type: string
+          required: true
+          description: movie ID to get comments for.
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommentList'
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /movies:
+    get:
+      tags:
+      - "public"
+      summary: "get list of movies"
+      description: ""
+      operationId: "getMovies"
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieList'
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'         
+  /movie/{id}:
+    get:
+      tags:
+      - "public"
+      summary: "get information of single movie"
+      description: ""
+      operationId: "getMovie"
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: movie id.
+      responses:
+        400:
+          description:
+            Bad request. 
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        500:
+          description: There is an internal issue.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'  
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        message:
+          type: string
+          description: Describe the error in plain english.
+          
+    Movie:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        description:
+          type: string
+        rating:
+          type: number
+          
+    MovieList:
+      type: object
+      properties: 
+        movies:
+          type: array
+          items:
+            $ref: '#/components/schemas/Movie'
+              
+    CommentList:
+      type: object
+      properties: 
+        movie:
+          type: string
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+              author:
+                type: string
+              body:
+                type: string

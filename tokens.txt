@@ -1,0 +1,9 @@
+admin jwt token: 
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImFtaXJob3NzZWluIn0.BsUONl2D4z7lu1bLBaHwffM2dT_ucN7Xy58nVLGGoEE
+
+normal user jwt token:
+eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6Im5vcm1hbCB1c2VyIn0.78muufBgTwMPoU9W1khUFAC_FWX17ocQqDHZBYRhdLs
+
+
+secret key:
+ahvbfhdvavlknjvbamammadheiv
