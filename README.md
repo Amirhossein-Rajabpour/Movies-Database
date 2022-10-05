@@ -1,5 +1,5 @@
 # Movies Database
-This project is a movie database for our Internet Engineering course instructed by [Parham Alvani](https://github.com/1995parham). It was mainly about managing access management. There are 3 types of users.
+This project is a movie database for our Internet Engineering course instructed by [Parham Alvani](https://github.com/1995parham). It was mainly about access management. There are 3 types of users.
 * **Admins**: they have the following accesses:
   * Add a new movie
   * Edit a movie
